@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?>  
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/template/template.xhtml">
+
+
+	<ui:define name="titulo">
+		Gerenciamento de Produtos
+	</ui:define>
+	
+	<ui:define name="conteudo">
+	
+		<p:tabView binding="#{produtoMBean.tabView}">
+			<p:tab title="Cadastro">
+				<h:form id="formulario">
+					<h:inputHidden value="#{produtoMBean.produto.id}"/>
+					<p:panelGrid columns="2">
+						<p:outputLabel value="Denominação" for="Denominacao"/>
+						<p:inputText 
+							id="Denominacao"
+							value="#{produtoMBean.produto.denominacao}" 
+							required="true"
+							validatorMessage="Denominação deve ter no máximo 30 caracteres">
+							<f:validateLength maximum="30"/>
+						</p:inputText>	
+						<p:outputLabel value="Descrição"/>
+						<p:inputText
+							id="descricao"
+							validatorMessage="Descrição deve ter no máximo 80 caracteres" 
+							value="#{produtoMBean.produto.descricao}">
+							<f:validateLength maximum="80" />
+						</p:inputText>	
+						<p:outputLabel value="Preço" for="preco"/>
+						<p:inputNumber
+							id="preco"
+							value="#{produtoMBean.produto.preco}" 
+							decimalSeparator="," 
+							thousandSeparator="."
+							required="true"/>
+						<p:outputLabel value="Categoria"/>
+						<p:selectOneMenu value="#{produtoMBean.produto.categoria.id}">
+							<f:selectItems value="#{categoriaMBean.listaCompleta}" 
+								var="categoria"
+								itemValue="#{categoria.id}"
+								itemLabel="#{categoria.denominacao}" />
+						</p:selectOneMenu>
+						
+					</p:panelGrid>
+					
+					<p:commandButton value="Salvar" 
+						action="#{produtoMBean.salvar}" 
+						ajax="false" 
+						icon="ui-icon-disk"/>
+				</h:form>
+			</p:tab>	
+				
+			<p:tab title="Consulta">
+				<h:form>	
+					<p:dataTable 
+						id="tabConsuta"
+						value="#{produtoMBean.listaCompleta}" 
+						var="produto">
+						<p:column>
+							<f:facet name="header">
+							<h:outputText value="Denominação" />
+							</f:facet>				
+							<h:outputText value="#{produto.denominacao}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+							<h:outputText value="Categoria" />
+							</f:facet>				
+							<h:outputText value="#{produto.categoria.denominacao}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+							<h:outputText value="Preço" />
+							</f:facet>				
+							<h:outputText value="#{produto.preco}" >
+								<f:convertNumber pattern="R$ #,##0.00"  />
+							</h:outputText>
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+							<h:outputText value="Editar" />
+							</f:facet>				
+							<p:commandButton 
+								action="#{produtoMBean.selecionar(produto)}" 
+								icon="ui-icon-zoomout" 
+								ajax="false"/>
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+							<h:outputText value="Deletar" />
+							</f:facet>				
+							<p:commandButton 
+								action="#{produtoMBean.deletar(produto)}" 
+								icon="ui-icon-trash" 
+								ajax="false"/>
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+							<h:outputText value="DeletarAjax" />
+							</f:facet>				
+							<p:commandButton 
+								action="#{produtoMBean.deletaraAjax(produto)}" 
+								icon="ui-icon-trash"
+								update="tabConsuta, msgAjax">
+								 <p:confirm header="Confirmação" 
+								 			message="Deseja realmente deletar este registro?" 
+								 			icon="ui-icon-alert" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</h:form> 
+			</p:tab>
+		</p:tabView>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" lang="pt-br">
+
+<h:head>
+<title>Logar</title>
+</h:head>
+<body>
+	<h:form>
+		<p:messages id="messages" />
+
+		<p:fieldset legend="Entrar no sistema"
+			style="width: 50%; margin: 0px auto;">
+			<p:panelGrid columns="2" layout="grid">
+
+				<p:outputLabel for="login" value="Login" />
+				<p:inputText id="login" value="#{usuarioMBean.obj.email}" />
+
+				<p:outputLabel for="senha" value="Senha:" />
+				<p:password id="senha" value="#{usuarioMBean.obj.senha}" />
+
+
+				<p:commandButton value="Logar"
+					action="#{usuarioMBean.login()}" ajax="false">
+				</p:commandButton>
+			</p:panelGrid>
+		</p:fieldset>
+	</h:form>
+</body>
+
+<style type="text/css">
+.ui-widget {
+	font-size: 14px !important;
+}
+</style>
+</html>
